@@ -15,7 +15,7 @@
 <title>Convite Thalisse 28 anos</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Kalam:wght@300;400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Kalam:wght@300;400;700&family=Josefin+Sans:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
 [hidden]{display:none!important}
 /* Convite Revela (fenda vertical): a capa tem uma fenda recortada; ao puxar o pingente para cima, a capa sobe e revela a página de informações, que fica parada atrás. */
@@ -79,12 +79,12 @@ button,input,textarea{font:inherit;color:inherit}
 .cover>img{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
 
 /* recado escrito direto na porta, como o "You're so invited!" */
-.postit{position:absolute;left:50%;top:67.2%;width:34cqw;transform:translate(-50%,-50%) rotate(-2deg);font-family:var(--hand);font-weight:400;font-size:3.5cqw;line-height:1.25;text-align:center;color:#12061c;pointer-events:none;text-wrap:balance}
+.postit{position:absolute;left:46%;top:66.5%;width:34cqw;transform:translate(-50%,-50%) rotate(-2deg);font-family:var(--hand);font-weight:400;font-size:3.5cqw;line-height:1.25;text-align:center;color:#12061c;pointer-events:none;text-wrap:balance}
 .postit b{display:block;margin-top:.4cqw;font-size:4.6cqw;line-height:1;font-weight:400;color:#12061c}
 
 /* pingente: desliza para cima dentro da fenda */
 .pull{
-  position:absolute;left:89.2%;top:64.5%;width:15cqw;aspect-ratio:640/672;
+  position:absolute;left:89.5%;top:65.8%;width:15cqw;aspect-ratio:640/672;
   transform:translate(-50%,-50%);
   background:url(assets/puxador.webp) center/contain no-repeat;
   border:0;padding:0;cursor:grab;touch-action:none;
@@ -95,57 +95,51 @@ button,input,textarea{font:inherit;color:inherit}
 .pull:active{cursor:grabbing}
 .pull:focus-visible{outline:3px solid var(--gold-light);outline-offset:4px;border-radius:50%}
 
-/* ---------- confirmação de presença (arte + campos por cima) ---------- */
-.rsvp-art{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;user-select:none}
-.rsvp-wrap{position:absolute;inset:0}
+/* ---------- confirmação, agradecimento e local: cartão escuro no tom da parede roxa ---------- */
+.rcard{
+  position:absolute;left:8%;right:8%;top:50%;transform:translateY(-50%);
+  display:flex;flex-direction:column;gap:3.2cqw;padding:8cqw 7cqw 7cqw;border-radius:4cqw;
+  background:linear-gradient(180deg,rgba(52,20,74,.9),rgba(34,12,52,.92));
+  border:.35cqw solid rgba(226,165,43,.75);box-shadow:0 3cqw 8cqw rgba(0,0,0,.55),inset 0 0 0 1.2cqw rgba(226,165,43,.08);
+  color:#f6ead8;font-family:'Josefin Sans','Segoe UI',sans-serif;
+}
+.rcard.center{align-items:center;text-align:center;gap:3.6cqw}
+.rcard[hidden]{display:none}
+.eyebrow{margin:0;text-align:center;font-family:var(--hand);font-weight:300;font-style:italic;font-size:4cqw;letter-spacing:.18em;text-transform:uppercase;color:#e9c277}
+.rt{margin:0;text-align:center;font-family:var(--display);font-weight:400;font-size:10.5cqw;line-height:1;color:#fff7e6}
+.gl{height:1px;width:46%;margin:.6cqw auto 1cqw;background:linear-gradient(90deg,transparent,#e2a52b,transparent)}
+.lb{display:block;margin:0 0 1.2cqw;font-size:3cqw;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:#e9c277}
+.lb em{font-style:normal;font-weight:300;letter-spacing:.08em;text-transform:none;color:rgba(246,234,216,.65)}
 .fld{
-  position:absolute;border:0;margin:0;border-radius:3cqw;background:#fde7cd;
-  font-family:var(--hand);font-size:4.4cqw;line-height:1.2;color:#3b1450;
-  box-shadow:inset 0 .3cqw .8cqw rgba(90,40,20,.18);
+  display:block;width:100%;border:0;border-bottom:.3cqw solid rgba(226,165,43,.7);border-radius:1.2cqw 1.2cqw 0 0;
+  background:rgba(255,255,255,.07);padding:2.4cqw 3cqw;font-family:'Josefin Sans','Segoe UI',sans-serif;font-weight:300;font-size:4.5cqw;line-height:1.3;color:#fff7e6;
 }
-.fld::placeholder{color:rgba(80,50,70,.55);font-style:italic}
-.fld:focus{outline:2px solid var(--gold);outline-offset:1px}
-#nome{left:25.5%;top:38.5%;width:57.5%;height:4.7%;padding:0 2.5cqw;border-radius:0 3cqw 3cqw 0;box-shadow:none}
-#recado{left:27.5%;top:73.6%;width:54%;height:7.5%;padding:1.6cqw 2.5cqw;resize:none;border-radius:0 3cqw 3cqw 0;box-shadow:none}
+.fld::placeholder{color:rgba(246,234,216,.45)}
+.fld:focus{outline:0;background:rgba(255,255,255,.12);border-bottom-color:#ffd86b}
+textarea.fld{resize:none;height:17cqw}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:2.6cqw}
 .pick{
-  position:absolute;top:49.2%;width:28.2%;height:18.6%;border:0;padding:0;margin:0;background:transparent;cursor:pointer;border-radius:5cqw;
+  min-height:11.5cqw;padding:1cqw 2cqw;border-radius:999px;cursor:pointer;
+  border:.3cqw solid rgba(226,165,43,.7);background:transparent;color:#f6ead8;
+  font-family:'Josefin Sans','Segoe UI',sans-serif;font-weight:400;font-size:3.8cqw;letter-spacing:.04em;line-height:1.1;transition:background .25s ease,color .25s ease,border-color .25s ease;
 }
-.pick.sim{left:21.8%}.pick.nao{left:53.5%}
-.pick::after{content:"";position:absolute;inset:0;border-radius:5cqw;transition:background .25s ease,box-shadow .25s ease}
-.pick.on::after{box-shadow:0 0 0 .8cqw var(--gold-light),0 0 5cqw 1.5cqw rgba(255,216,107,.75)}
-.pick.off::after{background:rgba(40,8,55,.55)}
-.pick:focus-visible{outline:3px solid #fff;outline-offset:2px}
-.pick .tag{position:absolute;left:50%;bottom:-3.6cqw;transform:translateX(-50%);font-family:var(--display);font-size:4.2cqw;color:var(--gold-light);white-space:nowrap;opacity:0;transition:opacity .25s ease;text-shadow:0 .3cqw .8cqw rgba(0,0,0,.6)}
-.pick.on .tag{opacity:1}
-.err{position:absolute;left:12%;right:12%;top:81.1%;margin:0;text-align:center;font-family:var(--hand);font-weight:700;font-size:3.3cqw;color:#ffb3a8;text-shadow:0 .2cqw .6cqw rgba(0,0,0,.6)}
-.act{
-  position:absolute;top:83.4%;height:4.8%;border-radius:999px;cursor:pointer;
-  font-family:var(--display);font-size:5.6cqw;letter-spacing:.02em;
-  display:flex;align-items:center;justify-content:center;text-decoration:none;
-}
-.act.voltar{left:23%;width:21%;background:rgba(59,15,77,.88);color:var(--gold-light);border:.5cqw solid var(--gold)}
-.act.enviar{left:47.5%;width:25%;background:linear-gradient(180deg,#ffe28a,#e2a52b 55%,#c98512);color:#3b1450;border:.5cqw solid #fff3c4;box-shadow:0 .8cqw 2cqw rgba(0,0,0,.4)}
-.act:active{filter:brightness(.9)}
-.act:focus-visible{outline:3px solid #fff;outline-offset:2px}
-.redir{position:absolute;left:14%;right:14%;top:89.6%;margin:0;text-align:center;font-family:var(--hand);font-size:3cqw;line-height:1.3;color:var(--cream);text-shadow:0 .2cqw .6cqw rgba(0,0,0,.6)}
-
-/* cartão de agradecimento / local (mesmo tema) */
-.card{
-  position:absolute;left:11%;right:11%;top:19%;bottom:24%;border-radius:6cqw;
-  background:linear-gradient(180deg,#fff0d8,#fbdcb5);
-  border:1cqw solid var(--gold);box-shadow:0 2cqw 6cqw rgba(0,0,0,.5),inset 0 0 0 .6cqw rgba(255,255,255,.55);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3.2cqw;padding:6cqw;text-align:center;color:var(--ink);
-}
-.card .orn{color:#b8800c;font-size:4.4cqw;letter-spacing:.6em;text-indent:.6em}
-.card .big{font-family:var(--display);font-size:11cqw;line-height:1.05}
-.card .soft{margin:0;font-size:4.6cqw;line-height:1.35;font-weight:700}
-.card .rule{height:1px;width:60%;background:linear-gradient(90deg,transparent,#b8800c,transparent)}
-.card .acts{display:grid;gap:2.4cqw;width:100%;margin-top:1cqw}
-.btn{display:flex;align-items:center;justify-content:center;min-height:11cqw;padding:1cqw 5cqw;border-radius:999px;font-family:var(--display);font-size:5.4cqw;text-decoration:none;cursor:pointer}
-.btn.primary{border:.5cqw solid #fff3c4;color:var(--ink);background:linear-gradient(180deg,#ffe28a,#e2a52b 55%,#c98512);box-shadow:0 .8cqw 2cqw rgba(0,0,0,.3)}
-.btn.ghost{border:.5cqw solid #b8800c;background:transparent;color:var(--ink)}
-.btn:focus-visible{outline:3px solid var(--plum);outline-offset:2px}
-.ttlmap{position:absolute;left:8%;right:8%;top:17%;margin:0;text-align:center;font-family:var(--display);font-size:11cqw;color:var(--gold-light);text-shadow:0 .5cqw 1.2cqw rgba(0,0,0,.6)}
+.pick.on{background:linear-gradient(180deg,#e58b3c,#b9561f);border-color:#ffd9a0;color:#fff;font-weight:600}
+.pick.off{opacity:.55}
+.pick:focus-visible{outline:2px solid #ffd86b;outline-offset:2px}
+.err{margin:0;text-align:center;font-size:3.5cqw;font-weight:600;color:#ffb3a8}
+.redir{margin:0;text-align:center;font-size:3cqw;line-height:1.4;font-weight:300;color:rgba(246,234,216,.75)}
+.acts2{display:grid;grid-template-columns:1fr 1.5fr;gap:2.6cqw;margin-top:1.4cqw}
+.btn{display:flex;align-items:center;justify-content:center;min-height:12cqw;padding:1cqw 5cqw;border-radius:999px;font-family:'Josefin Sans','Segoe UI',sans-serif;font-weight:600;font-size:3.3cqw;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;cursor:pointer;width:100%}
+.btn.primary{border:.3cqw solid #ffd9a0;color:#fff;background:linear-gradient(180deg,#e58b3c,#b9561f);box-shadow:0 1cqw 2.4cqw rgba(0,0,0,.4)}
+.btn.ghost{border:.3cqw solid rgba(226,165,43,.75);background:transparent;color:#f6ead8}
+.btn:active{filter:brightness(.92)}
+.btn:focus-visible{outline:2px solid #ffd86b;outline-offset:2px}
+.rcard .orn{color:#e2a52b;font-size:4cqw;letter-spacing:.6em;text-indent:.6em}
+.rcard .big{font-family:var(--display);font-size:10.5cqw;line-height:1.05;color:#fff7e6}
+.rcard .soft{margin:0;font-weight:300;font-size:4.6cqw;line-height:1.45;color:#f6ead8}
+.rcard .soft b{font-weight:600}
+.rcard .rule{height:1px;width:46%;background:linear-gradient(90deg,transparent,#e2a52b,transparent)}
+.rcard .acts{display:grid;gap:2.6cqw;width:100%;margin-top:1.4cqw}
 
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
 </style>
@@ -157,9 +151,9 @@ button,input,textarea{font:inherit;color:inherit}
   <div class="bg" id="main-bg" style="background-image:url(assets/capa.webp)"></div>
   <div class="stage" id="stage">
     <div class="sheet" id="sheet">
-      <img class="page" src="assets/informacoes.jpg" alt="Convite: aquele em que a Thalisse faz 28 anos. Dia 10 de dezembro, às 19 horas." width="941" height="1672" decoding="async">
-      <button class="hot" id="btn-confirm" type="button" style="--x:31.5%;--y:37.4%;--w:17.5%;--h:14.7%" aria-label="Confirmar presença"></button>
-      <button class="hot" id="btn-map" type="button" style="--x:51.5%;--y:37.4%;--w:17.5%;--h:14.7%" aria-label="Local da festa"></button>
+      <img class="page" src="assets/informacoes.jpg" alt="Convite: aquele em que a Thalisse faz 28 anos. Dia 10 de dezembro, às 18 horas." width="941" height="1672" decoding="async">
+      <button class="hot" id="btn-confirm" type="button" style="--x:18.6%;--y:58.9%;--w:45.2%;--h:6.5%" aria-label="Confirmar presença"></button>
+      <button class="hot" id="btn-map" type="button" style="--x:18.3%;--y:66.7%;--w:45.5%;--h:6.5%" aria-label="Local da festa"></button>
       <button class="back" id="btn-cover" type="button" tabindex="-1">↓ voltar para a capa</button>
     </div>
 
@@ -173,22 +167,35 @@ button,input,textarea{font:inherit;color:inherit}
 
 <!-- confirmar presença -->
 <section class="screen" id="rsvp" aria-hidden="true">
-  <div class="bg dark" style="background-image:url(assets/rsvp.webp)"></div>
-  <div class="stage">
-    <img class="rsvp-art" src="assets/rsvp.webp" alt="" width="941" height="1672" decoding="async">
-    <form class="rsvp-wrap" id="rsvp-form" novalidate>
-      <label class="sr" for="nome" style="position:absolute;left:-9999px">Seu nome</label>
-      <input class="fld" id="nome" name="nome" type="text" placeholder="Digite seu nome aqui..." autocomplete="name" maxlength="60">
-      <button class="pick sim" type="button" id="p-sim" role="radio" aria-checked="false" aria-label="Sim, eu vou"><span class="tag">Eu vou!</span></button>
-      <button class="pick nao" type="button" id="p-nao" role="radio" aria-checked="false" aria-label="Não poderei ir"><span class="tag">Não vou dessa vez</span></button>
-      <label class="sr" for="recado" style="position:absolute;left:-9999px">Recado (opcional)</label>
-      <textarea class="fld" id="recado" name="recado" placeholder="Escreva seu recado..." maxlength="140"></textarea>
+  <div class="bg dark" style="background-image:url(assets/informacoes.jpg)"></div>
+  <div class="stage form">
+    <form class="rcard" id="rsvp-form" novalidate>
+      <p class="eyebrow">aquele em que você</p>
+      <h2 class="rt">confirma presença</h2>
+      <div class="gl"></div>
+      <div>
+        <label class="lb" for="nome">Seu nome</label>
+        <input class="fld" id="nome" name="nome" type="text" placeholder="Nome e sobrenome" autocomplete="name" maxlength="60">
+      </div>
+      <div>
+        <span class="lb" id="lg-resp">Você vai?</span>
+        <div class="choices" role="radiogroup" aria-labelledby="lg-resp">
+          <button class="pick sim" type="button" id="p-sim" role="radio" aria-checked="false">Eu vou!</button>
+          <button class="pick nao" type="button" id="p-nao" role="radio" aria-checked="false">Não poderei ir</button>
+        </div>
+      </div>
+      <div>
+        <label class="lb" for="recado">Deixe um recado <em>(opcional)</em></label>
+        <textarea class="fld" id="recado" name="recado" placeholder="Escreva seu recado..." maxlength="140"></textarea>
+      </div>
       <p class="err" id="rsvp-err" role="alert" hidden></p>
-      <button class="act voltar" type="button" data-back>Voltar</button>
-      <button class="act enviar" type="submit">Enviar</button>
       <p class="redir" id="redir" hidden>Ao enviar, você será levado ao WhatsApp para finalizar a sua confirmação.</p>
+      <div class="acts2">
+        <button class="btn ghost" type="button" data-back>Voltar</button>
+        <button class="btn primary" type="submit">Enviar</button>
+      </div>
     </form>
-    <div class="card" id="thanks" hidden>
+    <div class="rcard center" id="thanks" hidden>
       <span class="orn" aria-hidden="true">✦ ✦ ✦</span>
       <div class="big" id="thanks-title">Que alegria!</div>
       <div class="rule"></div>
@@ -205,11 +212,11 @@ button,input,textarea{font:inherit;color:inherit}
 <section class="screen" id="map" aria-hidden="true">
   <div class="bg dark" style="background-image:url(assets/informacoes.jpg)"></div>
   <div class="stage form">
-    <h2 class="ttlmap">Local da festa</h2>
-    <div class="card" style="top:30%;bottom:26%">
+    <div class="rcard center">
+      <p class="eyebrow">local da festa</p>
       <span class="orn" aria-hidden="true">✦ ✦ ✦</span>
       <div class="soft">A comemoração será</div>
-      <div class="big" id="map-place" style="font-size:9.4cqw">Local a confirmar</div>
+      <div class="big" id="map-place">Local a confirmar</div>
       <p class="soft" id="map-addr" hidden></p>
       <div class="rule"></div>
       <p class="soft" id="map-when" hidden></p>
@@ -232,7 +239,7 @@ button,input,textarea{font:inherit;color:inherit}
     endereco:'',
     mapa:false,                    /* true = mostra "Abrir no mapa" (precisa de endereço) */
     data:'10 de dezembro',
-    hora:'19h',
+    hora:'18h',
     whatsapp:'',                   /* ex.: '5585999999999' */
     musica:'assets/musica.mp3'
   };
@@ -270,7 +277,7 @@ button,input,textarea{font:inherit;color:inherit}
   /* ====== pingente: desliza para cima dentro da fenda enquanto a capa sobe ====== */
   /* v = quanto o dedo subiu (px). O pingente acompanha o dedo: parte é ele correndo dentro da fenda (r),
      parte é a capa subindo (c = K*v). */
-  var Y_START=64.5, TRAVEL=25.3, K=.3, THRESH=TRAVEL/100/(1-K);   /* Y_START e TRAVEL em % da altura; THRESH em fração da altura */
+  var Y_START=65.8, TRAVEL=29.3, K=.3, THRESH=TRAVEL/100/(1-K);   /* Y_START e TRAVEL em % da altura; THRESH em fração da altura */
   var s=0,s0=0,startY=0,dragging=false,H=0;
   function measure(){H=stage.getBoundingClientRect().height}
   function parts(v){return {r:Math.min(v*(1-K),TRAVEL/100*H),c:v*K}}
