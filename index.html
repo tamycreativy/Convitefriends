@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#6f4a9c" id="tc">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Convite · Thalisse faz 28 anos">
+<meta property="og:description" content="Você está convidado(a)! Puxe o pingente para abrir a porta e revelar o convite.">
+<title>Convite Thalisse 28 anos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat+Brush&family=Kalam:wght@400;700&display=swap" rel="stylesheet">
+<style>
+[hidden]{display:none!important}
+/* Convite Revela (fenda vertical): a capa tem uma fenda recortada; ao puxar o pingente para cima, a capa sobe e revela a página de informações, que fica parada atrás. */
+:root{
+  --plum:#3b0f4d;
+  --plum-soft:#5a2a6b;
+  --gold:#e2a52b;
+  --gold-light:#ffd86b;
+  --cream:#fde7cd;
+  --ink:#3b1450;
+  --ground:#6f4a9c;
+  --display:'Caveat Brush','Segoe Print',cursive;
+  --hand:'Kalam','Segoe Print',cursive;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{background:var(--ground)}
+html,body{margin:0;height:100%;min-height:100lvh;overflow:hidden;overscroll-behavior:none;-webkit-text-size-adjust:100%}
+body{background:var(--ground);color:var(--ink);font-family:var(--hand);-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+button,input,textarea{font:inherit;color:inherit}
+
+/* ---------- telas ---------- */
+.screen{position:fixed;inset:0;overflow:hidden;opacity:0;visibility:hidden;transition:opacity 0s linear .6s,visibility 0s linear .6s}
+.screen.active{opacity:1;visibility:visible;transition:opacity .6s ease,visibility 0s}
+.bg{display:block;position:absolute;inset:-6%;background-size:cover;background-position:center;filter:blur(26px) brightness(.8);transform:scale(1.08)}
+.bg.dark{filter:blur(20px) brightness(.45) saturate(1.1)}
+
+.stage{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  height:100%;aspect-ratio:941/1672;
+  container-type:inline-size;overflow:hidden;
+}
+.stage>img,.page{position:absolute;inset:0;width:100%;height:100%;display:block;object-fit:cover;user-select:none;-webkit-user-drag:none}
+/* telas de formulário: a largura nunca passa da tela, então nada é cortado nas laterais */
+.stage.form{height:100%;width:min(100%,calc(100svh*941/1672));aspect-ratio:auto;overflow:visible}
+
+/* ---------- convite: página + capa deslizante ---------- */
+.hot{
+  position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);
+  border-radius:6cqw;border:0;padding:0;margin:0;background:transparent;cursor:pointer;display:block;
+}
+.hot:active{background:rgba(255,216,107,.2)}
+.hot:focus-visible{outline:3px solid var(--gold-light);outline-offset:-4px}
+
+.back{
+  position:absolute;left:50%;top:1.8%;transform:translateX(-50%);z-index:3;
+  font-family:var(--hand);font-size:3.2cqw;font-weight:700;color:var(--cream);
+  background:rgba(59,15,77,.78);border:1px solid rgba(255,216,107,.7);border-radius:99px;
+  padding:1.3cqw 3.8cqw;cursor:pointer;white-space:nowrap;
+  opacity:0;visibility:hidden;transition:opacity .5s ease,visibility 0s linear .5s;
+}
+.back.show{opacity:1;visibility:visible;transition:opacity .6s ease,visibility 0s}
+.back:active{background:rgba(120,50,150,.9)}
+.back:focus-visible{outline:2px solid var(--gold-light);outline-offset:2px}
+.cover{position:absolute;inset:0;z-index:5;transform:translate3d(0,0,0);will-change:transform;transition:transform .55s cubic-bezier(.2,.8,.2,1)}
+.cover.drag{transition:none}
+.sheet{position:absolute;inset:0}
+.stage#stage{opacity:0;transition:opacity .6s ease}
+.stage#stage.ready{opacity:1}
+.cover.gone{visibility:hidden;transition:none}
+.cover>img{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;user-select:none;-webkit-user-drag:none}
+
+/* pingente: desliza para cima dentro da fenda */
+.pull{
+  position:absolute;left:89.2%;top:64.5%;width:15cqw;aspect-ratio:640/672;
+  transform:translate(-50%,-50%);
+  background:url(assets/puxador.webp) center/contain no-repeat;
+  border:0;padding:0;cursor:grab;touch-action:none;
+  filter:drop-shadow(0 .8cqw 1.2cqw rgba(20,0,30,.55));
+}
+.pull::before{content:"";position:absolute;inset:-3%}
+.pull.settle{transition:top .5s cubic-bezier(.2,.8,.2,1)}
+.pull:active{cursor:grabbing}
+.pull:focus-visible{outline:3px solid var(--gold-light);outline-offset:4px;border-radius:50%}
+
+/* ---------- confirmação de presença (arte + campos por cima) ---------- */
+.rsvp-art{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;user-select:none}
+.rsvp-wrap{position:absolute;inset:0}
+.fld{
+  position:absolute;border:0;margin:0;border-radius:3cqw;background:#fde7cd;
+  font-family:var(--hand);font-size:4.4cqw;line-height:1.2;color:#3b1450;
+  box-shadow:inset 0 .3cqw .8cqw rgba(90,40,20,.18);
+}
+.fld::placeholder{color:rgba(80,50,70,.55);font-style:italic}
+.fld:focus{outline:2px solid var(--gold);outline-offset:1px}
+#nome{left:25.5%;top:38.5%;width:57.5%;height:4.7%;padding:0 2.5cqw;border-radius:0 3cqw 3cqw 0;box-shadow:none}
+#recado{left:27.5%;top:73.6%;width:54%;height:7.5%;padding:1.6cqw 2.5cqw;resize:none;border-radius:0 3cqw 3cqw 0;box-shadow:none}
+.pick{
+  position:absolute;top:49.2%;width:28.2%;height:18.6%;border:0;padding:0;margin:0;background:transparent;cursor:pointer;border-radius:5cqw;
+}
+.pick.sim{left:21.8%}.pick.nao{left:53.5%}
+.pick::after{content:"";position:absolute;inset:0;border-radius:5cqw;transition:background .25s ease,box-shadow .25s ease}
+.pick.on::after{box-shadow:0 0 0 .8cqw var(--gold-light),0 0 5cqw 1.5cqw rgba(255,216,107,.75)}
+.pick.off::after{background:rgba(40,8,55,.55)}
+.pick:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.pick .tag{position:absolute;left:50%;bottom:-3.6cqw;transform:translateX(-50%);font-family:var(--display);font-size:4.2cqw;color:var(--gold-light);white-space:nowrap;opacity:0;transition:opacity .25s ease;text-shadow:0 .3cqw .8cqw rgba(0,0,0,.6)}
+.pick.on .tag{opacity:1}
+.err{position:absolute;left:12%;right:12%;top:81.1%;margin:0;text-align:center;font-family:var(--hand);font-weight:700;font-size:3.3cqw;color:#ffb3a8;text-shadow:0 .2cqw .6cqw rgba(0,0,0,.6)}
+.act{
+  position:absolute;top:83.4%;height:4.8%;border-radius:999px;cursor:pointer;
+  font-family:var(--display);font-size:5.6cqw;letter-spacing:.02em;
+  display:flex;align-items:center;justify-content:center;text-decoration:none;
+}
+.act.voltar{left:23%;width:21%;background:rgba(59,15,77,.88);color:var(--gold-light);border:.5cqw solid var(--gold)}
+.act.enviar{left:47.5%;width:25%;background:linear-gradient(180deg,#ffe28a,#e2a52b 55%,#c98512);color:#3b1450;border:.5cqw solid #fff3c4;box-shadow:0 .8cqw 2cqw rgba(0,0,0,.4)}
+.act:active{filter:brightness(.9)}
+.act:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.redir{position:absolute;left:14%;right:14%;top:89.6%;margin:0;text-align:center;font-family:var(--hand);font-size:3cqw;line-height:1.3;color:var(--cream);text-shadow:0 .2cqw .6cqw rgba(0,0,0,.6)}
+
+/* cartão de agradecimento / local (mesmo tema) */
+.card{
+  position:absolute;left:11%;right:11%;top:19%;bottom:24%;border-radius:6cqw;
+  background:linear-gradient(180deg,#fff0d8,#fbdcb5);
+  border:1cqw solid var(--gold);box-shadow:0 2cqw 6cqw rgba(0,0,0,.5),inset 0 0 0 .6cqw rgba(255,255,255,.55);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3.2cqw;padding:6cqw;text-align:center;color:var(--ink);
+}
+.card .orn{color:#b8800c;font-size:4.4cqw;letter-spacing:.6em;text-indent:.6em}
+.card .big{font-family:var(--display);font-size:11cqw;line-height:1.05}
+.card .soft{margin:0;font-size:4.6cqw;line-height:1.35;font-weight:700}
+.card .rule{height:1px;width:60%;background:linear-gradient(90deg,transparent,#b8800c,transparent)}
+.card .acts{display:grid;gap:2.4cqw;width:100%;margin-top:1cqw}
+.btn{display:flex;align-items:center;justify-content:center;min-height:11cqw;padding:1cqw 5cqw;border-radius:999px;font-family:var(--display);font-size:5.4cqw;text-decoration:none;cursor:pointer}
+.btn.primary{border:.5cqw solid #fff3c4;color:var(--ink);background:linear-gradient(180deg,#ffe28a,#e2a52b 55%,#c98512);box-shadow:0 .8cqw 2cqw rgba(0,0,0,.3)}
+.btn.ghost{border:.5cqw solid #b8800c;background:transparent;color:var(--ink)}
+.btn:focus-visible{outline:3px solid var(--plum);outline-offset:2px}
+.ttlmap{position:absolute;left:8%;right:8%;top:17%;margin:0;text-align:center;font-family:var(--display);font-size:11cqw;color:var(--gold-light);text-shadow:0 .5cqw 1.2cqw rgba(0,0,0,.6)}
+
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<!-- convite -->
+<audio id="music" loop preload="auto"></audio>
+<section class="screen active" id="main">
+  <div class="bg" id="main-bg" style="background-image:url(assets/capa.webp)"></div>
+  <div class="stage" id="stage">
+    <div class="sheet" id="sheet">
+      <img class="page" src="assets/informacoes.jpg" alt="Convite: aquele em que a Thalisse faz 28 anos. Dia 10 de dezembro, às 19 horas." width="941" height="1672" decoding="async">
+      <button class="hot" id="btn-confirm" type="button" style="--x:31.5%;--y:37.4%;--w:17.5%;--h:14.7%" aria-label="Confirmar presença"></button>
+      <button class="hot" id="btn-map" type="button" style="--x:51.5%;--y:37.4%;--w:17.5%;--h:14.7%" aria-label="Local da festa"></button>
+      <button class="back" id="btn-cover" type="button" tabindex="-1">↓ voltar para a capa</button>
+    </div>
+
+    <div class="cover" id="cover">
+      <img src="assets/capa.webp" alt="" width="941" height="1672" decoding="async" fetchpriority="high">
+      <button class="pull" id="pull" type="button" role="slider" aria-orientation="vertical" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Pingente: arraste para cima para abrir o convite"></button>
+    </div>
+  </div>
+</section>
+
+<!-- confirmar presença -->
+<section class="screen" id="rsvp" aria-hidden="true">
+  <div class="bg dark" style="background-image:url(assets/rsvp.webp)"></div>
+  <div class="stage">
+    <img class="rsvp-art" src="assets/rsvp.webp" alt="" width="941" height="1672" decoding="async">
+    <form class="rsvp-wrap" id="rsvp-form" novalidate>
+      <label class="sr" for="nome" style="position:absolute;left:-9999px">Seu nome</label>
+      <input class="fld" id="nome" name="nome" type="text" placeholder="Digite seu nome aqui..." autocomplete="name" maxlength="60">
+      <button class="pick sim" type="button" id="p-sim" role="radio" aria-checked="false" aria-label="Sim, eu vou"><span class="tag">Eu vou!</span></button>
+      <button class="pick nao" type="button" id="p-nao" role="radio" aria-checked="false" aria-label="Não poderei ir"><span class="tag">Não vou dessa vez</span></button>
+      <label class="sr" for="recado" style="position:absolute;left:-9999px">Recado (opcional)</label>
+      <textarea class="fld" id="recado" name="recado" placeholder="Escreva seu recado..." maxlength="140"></textarea>
+      <p class="err" id="rsvp-err" role="alert" hidden></p>
+      <button class="act voltar" type="button" data-back>Voltar</button>
+      <button class="act enviar" type="submit">Enviar</button>
+      <p class="redir" id="redir" hidden>Ao enviar, você será levado ao WhatsApp para finalizar a sua confirmação.</p>
+    </form>
+    <div class="card" id="thanks" hidden>
+      <span class="orn" aria-hidden="true">✦ ✦ ✦</span>
+      <div class="big" id="thanks-title">Que alegria!</div>
+      <div class="rule"></div>
+      <p class="soft" id="thanks-text"></p>
+      <div class="acts">
+        <a class="btn primary" id="thanks-wa" target="_blank" rel="noopener noreferrer" href="#" hidden>Avisar no WhatsApp</a>
+        <button class="btn ghost" type="button" data-back>Voltar ao convite</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- localização -->
+<section class="screen" id="map" aria-hidden="true">
+  <div class="bg dark" style="background-image:url(assets/informacoes.jpg)"></div>
+  <div class="stage form">
+    <h2 class="ttlmap">Local da festa</h2>
+    <div class="card" style="top:30%;bottom:26%">
+      <span class="orn" aria-hidden="true">✦ ✦ ✦</span>
+      <div class="soft">A comemoração será</div>
+      <div class="big" id="map-place" style="font-size:9.4cqw">Local a confirmar</div>
+      <p class="soft" id="map-addr" hidden></p>
+      <div class="rule"></div>
+      <p class="soft" id="map-when" hidden></p>
+      <div class="acts">
+        <a class="btn primary" id="map-open" target="_blank" rel="noopener noreferrer" href="#" hidden>Abrir no mapa</a>
+        <button class="btn ghost" type="button" data-back>Voltar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  /* ====== dados do convite (edite aqui) ====== */
+  var CONFIG={
+    nome:'Thalisse',
+    idade:28,
+    local:'Na minha casa',         /* texto da tela do local — vazio mostra "Local a confirmar" */
+    localFrase:'na casa da Thalisse', /* usado na mensagem de confirmação */
+    endereco:'',
+    mapa:false,                    /* true = mostra "Abrir no mapa" (precisa de endereço) */
+    data:'10 de dezembro',
+    hora:'19h',
+    whatsapp:'',                   /* ex.: '5585999999999' */
+    musica:''                      /* ex.: 'assets/musica.mp3' */
+  };
+
+  var $=function(s){return document.querySelector(s)};
+  var screens={main:$('#main'),rsvp:$('#rsvp'),map:$('#map')};
+  var cover=$('#cover'),pull=$('#pull'),stage=$('#stage');
+  var opened=false;
+
+  var TONES={cover:'#6f4a9c',info:'#5a2a63',form:'#2a0c38'};
+  function tone(c){document.documentElement.style.background=c;document.body.style.background=c;$('#tc').setAttribute('content',c)}
+  function go(name){
+    if(name==='main')tone(opened?TONES.info:TONES.cover);else tone(TONES.form);
+    Object.keys(screens).forEach(function(k){
+      var el=screens[k],on=k===name;
+      el.classList.toggle('active',on);
+      el.style.zIndex=on?10:5;
+      el.setAttribute('aria-hidden',on?'false':'true');
+      if('inert' in el) el.inert=!on;
+    });
+  }
+  go('main');
+  document.querySelectorAll('#main .hot,#btn-cover').forEach(function(b){b.tabIndex=-1;b.setAttribute('aria-hidden','true')});
+
+  /* em celulares estreitos o convite é cortado nas laterais. Aqui a fenda fica no canto direito e o bilhete
+     "Thalisse 28 anos" no esquerdo, então mostramos sempre uma faixa de 84% da largura da arte, de 11,5% a 95,5% */
+  function place(){
+    var vw=window.innerWidth,vh=window.innerHeight,Wf=vh*941/1672,W=Math.min(Wf,vw/.84),c;
+    stage.style.height=(W*1672/941)+'px';
+    if(W<=vw)c=vw/2;else{c=vw-.455*W;c=Math.min(c,W/2);c=Math.max(c,vw-W/2)}
+    stage.style.left=c+'px';
+  }
+  place();
+
+  /* ====== pingente: desliza para cima dentro da fenda enquanto a capa sobe ====== */
+  /* v = quanto o dedo subiu (px). O pingente acompanha o dedo: parte é ele correndo dentro da fenda (r),
+     parte é a capa subindo (c = K*v). */
+  var Y_START=64.5, TRAVEL=25.3, K=.3, THRESH=TRAVEL/100/(1-K);   /* Y_START e TRAVEL em % da altura; THRESH em fração da altura */
+  var s=0,s0=0,startY=0,dragging=false,H=0;
+  function measure(){H=stage.getBoundingClientRect().height}
+  function parts(v){return {r:Math.min(v*(1-K),TRAVEL/100*H),c:v*K}}
+  var music=$('#music'),musicOn=false,hasMusic=!!CONFIG.musica;
+  if(hasMusic)music.src=CONFIG.musica;
+  var unlocked=false;
+  function unlock(){
+    if(!hasMusic||unlocked)return;unlocked=true;
+    music.muted=true;
+    var p=music.play();
+    if(p&&p.then)p.then(function(){ if(!musicOn){music.pause();music.currentTime=0} music.muted=false },function(){unlocked=false;music.muted=false});
+    else music.muted=false;
+  }
+  function playMusic(){
+    if(!hasMusic||musicOn)return;musicOn=true;music.muted=false;
+    var p=music.play();if(p&&p.catch)p.catch(function(){musicOn=false});
+  }
+  function stopMusic(){
+    if(!hasMusic)return;
+    musicOn=false;music.pause();
+    try{music.currentTime=0}catch(_){}
+  }
+  function render(v){
+    var q=parts(v);
+    if(!opened){ if(v>=THRESH*H*.5)playMusic(); else if(musicOn)stopMusic(); }
+    cover.style.transform='translate3d(0,'+(-q.c)+'px,0)';
+    pull.style.top=(Y_START-q.r/H*100)+'%';
+    pull.setAttribute('aria-valuenow',Math.min(100,Math.round(v/(THRESH*H)*100)));
+  }
+  function finish(){
+    if(opened)return;
+    opened=true;dragging=false;tone(TONES.info);$('#main-bg').style.backgroundImage='url(assets/informacoes.jpg)';
+    measure();playMusic();
+    cover.classList.remove('drag');pull.classList.add('settle');
+    pull.style.top=(Y_START-TRAVEL)+'%';
+    cover.style.transform='translate3d(0,'+(-(H*1.04))+'px,0)';
+    pull.disabled=true;
+    document.querySelectorAll('#main .hot,#btn-cover').forEach(function(b){b.tabIndex=0;b.removeAttribute('aria-hidden')});
+    setTimeout(function(){cover.classList.add('gone');if(opened)$('#btn-cover').classList.add('show')},650);
+  }
+  function snapBack(){
+    s=0;pull.classList.add('settle');
+    render(0);
+    setTimeout(function(){if(!opened&&!dragging)pull.classList.remove('settle')},600);
+  }
+  function reopenCover(){
+    if(!opened)return;
+    opened=false;s=0;measure();tone(TONES.cover);$('#main-bg').style.backgroundImage='url(assets/capa.webp)';
+    $('#btn-cover').classList.remove('show');
+    stopMusic();
+    cover.classList.remove('gone');
+    void cover.offsetWidth;
+    cover.style.transform='translate3d(0,0,0)';
+    pull.style.top=Y_START+'%';
+    pull.disabled=false;
+    setTimeout(function(){pull.classList.remove('settle');pull.setAttribute('aria-valuenow',0)},560);
+    document.querySelectorAll('#main .hot,#btn-cover').forEach(function(b){b.tabIndex=-1;b.setAttribute('aria-hidden','true')});
+  }
+  $('#btn-cover').addEventListener('click',reopenCover);
+  pull.addEventListener('pointerdown',function(e){
+    if(opened)return;
+    measure();unlock();
+    dragging=true;startY=e.clientY;s0=s;
+    cover.classList.add('drag');
+    try{pull.setPointerCapture(e.pointerId)}catch(_){}
+    e.preventDefault();
+  });
+  pull.addEventListener('pointermove',function(e){
+    if(!dragging)return;
+    s=Math.max(0,Math.min(THRESH*H,s0+(startY-e.clientY)));
+    render(s);
+    if(s>=THRESH*H*.995)finish();
+  });
+  pull.addEventListener('pointerup',function(){
+    if(!dragging)return;
+    dragging=false;cover.classList.remove('drag');
+    if(musicOn&&music.paused){musicOn=false;playMusic()}
+    if(s>=THRESH*H*.9)finish();          /* só abre arrastando até o fim */
+    else snapBack();                      /* toque ou soltou no meio do caminho: a capa volta */
+  });
+  pull.addEventListener('pointercancel',function(){if(!dragging)return;dragging=false;cover.classList.remove('drag');snapBack()});
+  pull.addEventListener('keydown',function(e){
+    if(opened)return;
+    measure();
+    if(e.key==='ArrowUp'){e.preventDefault();s=Math.min(THRESH*H,s+.1*H);render(s);if(s>=THRESH*H*.995)finish()}
+    else if(e.key==='ArrowDown'){e.preventDefault();s=Math.max(0,s-.1*H);render(s)}
+    else if(e.key==='Enter'||e.key===' '){e.preventDefault();finish()}
+  });
+  measure();render(0);
+  window.addEventListener('resize',function(){place();measure();if(!opened&&!dragging)render(s)});
+
+  (function(){
+    var ph=new Image();ph.src='assets/puxador.webp';
+    var imgs=[cover.querySelector('img'),ph],done=false;
+    function show(){if(done)return;done=true;stage.classList.add('ready')}
+    var left=imgs.length;
+    imgs.forEach(function(im){
+      var ok=function(){if(--left===0)show()};
+      if(im.complete)ok();else{im.addEventListener('load',ok);im.addEventListener('error',ok)}
+    });
+    setTimeout(show,5000);
+  })();
+
+  /* ====== botões ====== */
+  var form=$('#rsvp-form'),nome=$('#nome'),recado=$('#recado'),err=$('#rsvp-err'),resp='';
+  function setResp(v){
+    resp=v;
+    [['sim','#p-sim'],['nao','#p-nao']].forEach(function(p){
+      var b=$(p[1]),on=v===p[0];
+      b.classList.toggle('on',on);b.classList.toggle('off',!!v&&!on);b.setAttribute('aria-checked',on?'true':'false');
+    });
+    err.hidden=true;
+  }
+  $('#p-sim').addEventListener('click',function(){setResp('sim')});
+  $('#p-nao').addEventListener('click',function(){setResp('nao')});
+  $('#btn-confirm').addEventListener('click',function(){
+    $('#thanks').hidden=true;form.hidden=false;err.hidden=true;
+    go('rsvp');
+  });
+  $('#btn-map').addEventListener('click',function(){go('map')});
+  document.querySelectorAll('[data-back]').forEach(function(b){b.addEventListener('click',function(){go('main')})});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&opened)go('main')});
+
+  /* ====== localização ====== */
+  var quando=(CONFIG.data||'')+(CONFIG.data&&CONFIG.hora?' · ':'')+(CONFIG.hora?'às '+CONFIG.hora:'');
+  $('#map-place').textContent=CONFIG.local||'Local a confirmar';
+  if(CONFIG.endereco){var a=$('#map-addr');a.textContent=CONFIG.endereco;a.hidden=false}
+  if(quando){var w=$('#map-when');w.textContent=quando;w.hidden=false}
+  if(CONFIG.mapa&&CONFIG.local&&CONFIG.endereco){
+    var o=$('#map-open');o.href='https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(CONFIG.local+', '+CONFIG.endereco);o.hidden=false;
+  }
+
+  /* ====== confirmar presença ====== */
+  if(CONFIG.whatsapp)$('#redir').hidden=false;
+  nome.addEventListener('input',function(){err.hidden=true});
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var n=nome.value.replace(/\s+/g,' ').trim();
+    if(n.length<2){err.textContent='Escreva seu nome para continuar.';err.hidden=false;nome.focus();return}
+    if(!resp){err.textContent='Escolha uma das molduras: você vai?';err.hidden=false;return}
+    var rec=recado.value.replace(/\s+/g,' ').trim();
+    var vai=resp==='sim',first=n.split(' ')[0],msg,titulo,texto;
+    if(vai){
+      titulo='Que alegria, '+first+'!';
+      texto='Presença confirmada. Esperamos você'+(quando?' em '+quando:'')+(CONFIG.localFrase?', '+CONFIG.localFrase:'')+'.';
+      msg='Olá! Confirmo presença no aniversário de '+CONFIG.idade+' anos da '+CONFIG.nome+(quando?' ('+quando+')':'')+'. Nome: '+n+'.'+(rec?' Recado: '+rec:'');
+    }else{
+      titulo='Obrigado por avisar, '+first+'!';
+      texto='Sentiremos a sua falta. Seu recado foi registrado com carinho.';
+      msg='Olá! Infelizmente não poderei ir ao aniversário de '+CONFIG.idade+' anos da '+CONFIG.nome+'. Nome: '+n+'.'+(rec?' Recado: '+rec:'');
+    }
+    $('#thanks-title').textContent=titulo;
+    $('#thanks-text').textContent=texto;
+    var wa=$('#thanks-wa');
+    if(CONFIG.whatsapp){wa.href='https://wa.me/'+CONFIG.whatsapp+'?text='+encodeURIComponent(msg);wa.hidden=false;setTimeout(function(){window.open(wa.href,'_blank','noopener')},900)}else{wa.hidden=true}
+    form.hidden=true;$('#thanks').hidden=false;
+  });
+})();
+</script>
+
+</body>
+</html>
